@@ -6,8 +6,11 @@ The end goal of this course is to scrape blogs to analyze trending keywords and 
 
 We'll be using Python 3.6, Requests, BeautifulSoup, Asyncio, Pandas, Numpy, and more!
 
-## Section 1: Your First Scraping Program
+## Section 1: [Your First Scraping Program](https://www.codingforentrepreneurs.com/courses/web-scraping/your-first-scraping-program/)
+Watch [here](https://www.codingforentrepreneurs.com/courses/web-scraping/your-first-scraping-program/)
+
 Final code is [first-web-scraping-program.zip](./first-web-scraping-program.zip)
+
 #### Install Guides
 Windows: https://kirr.co/6r8wr9
 
@@ -38,9 +41,9 @@ Linux: https://kirr.co/c3uvuu
     This allows us to search & extract content from an HTML webpage
 
 
-## Section 2: Advancing Scraping
+## Section 2: [Advancing Scraping](https://www.codingforentrepreneurs.com/courses/web-scraping/advancing-scraping/)
 _code coming soon_
 
 
-## Section 3: Asyncio & Web Scraping
+## Section 3: [Asyncio & Web Scraping](https://www.codingforentrepreneurs.com/courses/web-scraping/asyncio-web-scraping/)
 _code coming soon_
