@@ -18,7 +18,7 @@ Mac: https://kirr.co/386c7f
 
 Linux: https://kirr.co/c3uvuu
 
-#### Goals of this Scrape Program:
+#### Goals of Section 1:
 
 1. Enter any url (webpage)
 2. Open and scrape that webpage's words each word
@@ -41,8 +41,21 @@ Linux: https://kirr.co/c3uvuu
     This allows us to search & extract content from an HTML webpage
 
 
+
+
+
+
 ## Section 2: [Advancing Scraping](https://www.codingforentrepreneurs.com/courses/web-scraping/advancing-scraping/)
-_code coming soon_
+
+
+#### Goals of Section 2:
+1. Clean up Section 1's code
+2. Scrape & Store Links
+3. Add Scrape Depth
+
+
+
+
 
 
 ## Section 3: [Asyncio & Web Scraping](https://www.codingforentrepreneurs.com/courses/web-scraping/asyncio-web-scraping/)
