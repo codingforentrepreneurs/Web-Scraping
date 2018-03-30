@@ -58,10 +58,13 @@ def validate_url(url):
     return url
 
 
+def end_program():
+    raise KeyboardInterrupt("Program forced to quit.")
+
 def get_input():
     url = input("What is your url? ")
     if url == 'q':
-        return 
+        return end_program()
     try:
         validate_url(url)
     except ValueError as err:
