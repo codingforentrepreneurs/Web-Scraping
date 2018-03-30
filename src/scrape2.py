@@ -8,6 +8,20 @@ from urllib.parse import urlparse
 from collections import Counter
 from stop_words import get_stop_words
 
+saved_domains = {
+    "joincfe.com": {
+        "tag": "div",
+        "class": "main-container"
+    },
+    "tim.blog": {
+        "tag": "div",
+        "class": "content-area"
+    },
+}
+
+
+
+
 def clean_word(word):
     word = word.replace("!", "") #.split()
     word = word.replace("?", "")
@@ -85,6 +99,29 @@ def soupify(html):
     return soup
 
 
+def get_domain_name(url):
+    return urlparse(url).netloc
+
+
+def get_url_lookup_class(url):
+    domain_name = get_domain_name(url)
+    lookup_class = {}
+    if domain_name in saved_domains:
+        '''
+        change this to use a CSV file instead.
+        '''
+        lookup_class = saved_domains[domain_name]
+    return lookup_class
+
+
+def get_content_data(soup, url):
+    lookup_dict = get_url_lookup_class(url)
+    if lookup_dict is None:
+        return soup.find("body").text
+    return soup.find(lookup_dict['tag'], {"class": lookup_dict['class']})
+
+
+
 def main():
     url = get_input()
     response = fetch_url(url)
@@ -93,8 +130,8 @@ def main():
         return None
     response_html = response.text # html
     soup = soupify(response_html)
-
-
+    html_text = get_content_data(soup, url)
+    print(html_text)
 
     # call my url
     # parse
