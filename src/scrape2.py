@@ -43,20 +43,18 @@ def fetch_url(url):
 
 
 
-def re_valid_url(url):
-    http_regex = r'^https?://' # https or http
+def validate_url(url):
+    http_regex = r'^https?://' # https or http # validate .co, .com, 
     pattern = re.compile(http_regex)
     is_a_match = pattern.match(url) # regex match or None
     if is_a_match is None:
         raise ValueError("This url does not start with http:// or https://")
     return url
 
-def validate_url(url):
-    url = re_valid_url(url)
-    # if not "http" in url: # code.http.com
-    #     raise ValueError("This is not a valid url")
+def append_http(url):
+    if not url.startswith("http"):
+        return f'http://{url}'
     return url
-
 
 def end_program():
     raise KeyboardInterrupt("Program forced to quit.")
@@ -65,6 +63,7 @@ def get_input():
     url = input("What is your url? ")
     if url == 'q':
         return end_program()
+    url = append_http(url)
     try:
         validate_url(url)
     except ValueError as err:
