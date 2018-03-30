@@ -1,5 +1,7 @@
 .DS_STORE
 
+parse_git_log.py
+
 # Virtualenv related
 bin/
 include/
