@@ -39,7 +39,14 @@ def fetch_url(url):
     '''
     Request package 1 time
     '''
-    return requests.get(url)
+    response = requests.Response()
+    try:
+        response = requests.get(url)
+        print(dir(response)) # python
+        print(response.__class__) # python
+    except requests.exceptions.ConnectionError:
+        print("Could not connect to the url. Please try again.")
+    return response
 
 
 
@@ -75,6 +82,8 @@ def get_input():
 
 def main():
     url = get_input()
+    response = fetch_url(url)
+    print(response.status_code)
     # call my url
     # parse
     # save
