@@ -2,6 +2,7 @@ import csv
 import datetime
 import os
 import requests
+import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from collections import Counter
@@ -42,18 +43,30 @@ def fetch_url(url):
 
 
 
+def re_valid_url(url):
+    http_regex = r'^https?://' # https or http
+    pattern = re.compile(http_regex)
+    is_a_match = pattern.match(url) # regex match or None
+    if is_a_match is None:
+        raise ValueError("This url does not start with http:// or https://")
+    return url
+
 def validate_url(url):
-    if not "http" in url:
-        raise ValueError("This is not a valid url")
+    url = re_valid_url(url)
+    # if not "http" in url: # code.http.com
+    #     raise ValueError("This is not a valid url")
     return url
 
 
 def get_input():
     url = input("What is your url? ")
+    if url == 'q':
+        return 
     try:
         validate_url(url)
-    except ValueError:
-        print("This is an invalid url")
+    except ValueError as err:
+        print(err)
+        print("Type 'q' to quit lookup")
         return get_input()
     return url
 
