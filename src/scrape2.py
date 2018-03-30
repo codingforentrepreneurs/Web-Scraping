@@ -42,8 +42,8 @@ def fetch_url(url):
     response = requests.Response()
     try:
         response = requests.get(url)
-        print(dir(response)) # python
-        print(response.__class__) # python
+        #print(dir(response)) # python
+        #print(response.__class__) # python
     except requests.exceptions.ConnectionError:
         print("Could not connect to the url. Please try again.")
     return response
@@ -80,10 +80,22 @@ def get_input():
     return url
 
 
+def soupify(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    return soup
+
+
 def main():
     url = get_input()
     response = fetch_url(url)
-    print(response.status_code)
+    if response.status_code not in range(200, 299): # Http Status Codes
+        print(f"Invalid request, you cannot view this. {response.status_code}")
+        return None
+    response_html = response.text # html
+    soup = soupify(response_html)
+
+
+
     # call my url
     # parse
     # save
