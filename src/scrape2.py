@@ -38,15 +38,33 @@ def clean_word(word):
     word = word.replace(";", "")
     word = word.replace(")", "")
     word = word.replace("(", "")
+    word = word.replace("}", "")
+    word = word.replace("{", "")
     word = word.replace("-", "")
     word = word.replace("--", "")
     word = word.replace('—', "")
+    word = word.replace("i'm", "i am")
+    word = word.replace("it's", "it is")
+    word = word.strip()
     return word
 
 def clean_up_words(words):
     new_words = [] # empty list
     pkg_stop_words = get_stop_words('en')
-    my_stop_words = ['the', 'is', 'and', 'thisfacebooktwitteremailredditprint']
+    my_stop_words = [
+                'the', 
+                'is', 
+                'and', 
+                'thisfacebooktwitteremailredditprint', 
+                '',
+                'reply',
+                'likelike',
+                'likeliked',
+                'comments',
+                'commenting',
+                '/',
+                '='
+                ]
     for word in words:
         word = word.lower()
         cleaned_word = clean_word(word)
@@ -199,6 +217,18 @@ def get_regex_local_paths(soup, url):
     return list(set(local_paths)) 
 
 
+def parse_blog_post(path, url):
+    domain_name = get_domain_name(url)
+    lookup_url = f"http://{domain_name}{path}" 
+    lookup_response = fetch_url(lookup_url)
+    if lookup_response.status_code in range(200, 299):
+        lookup_soup = soupify(lookup_response.text)
+        lookup_html_soup = get_content_data(lookup_soup, lookup_url)
+        words = lookup_html_soup.text.split()
+        clean_words = clean_up_words(words)
+        #print(clean_words)
+    return clean_words
+
 def main():
     url = get_input()
     response = fetch_url(url)
@@ -210,14 +240,12 @@ def main():
     html_soup = get_content_data(soup, url)
     #print(html_text)
     paths = get_regex_local_paths(html_soup, url)
+    words = []
     for path in paths:
-        domain_name = get_domain_name(url)
-        lookup_url = f"http://{domain_name}{path}" 
-        lookup_response = fetch_url(lookup_url)
-        if lookup_response.status_code in range(200, 299):
-            lookup_soup = soupify(lookup_response.text)
-            # parse keywords & clean them
-            print(lookup_soup)
+        clean_words = parse_blog_post(path, url)
+        #print(clean_words)
+        words = words + clean_words
+    print(Counter(words).most_common(100))
 
     # call my url
     # parse
