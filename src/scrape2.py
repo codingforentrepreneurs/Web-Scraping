@@ -9,13 +9,15 @@ from collections import Counter
 from stop_words import get_stop_words
 
 saved_domains = {
-    "joincfe.com": {
+    "codingforentrepreneurs.com": {
         "tag": "div",
-        "class": "main-container"
+        "class": "main-container",
+        "regex": r"^/blog/(?P<slug>[\w-]+)/$",
     },
     "tim.blog": {
         "tag": "div",
-        "class": "content-area"
+        "class": "content-area",
+        "regex": r"^/(?P<year>\d+){4}/(?P<month>\d+){2}/(?P<day>\d+){2}/(?P<slug>[\w-]+)/$"
     },
 }
 
@@ -146,6 +148,52 @@ def get_local_paths(soup, url):
             local_paths.append(link)
     return list(set(local_paths)) # removes duplicates and returns list
 
+'''
+['/category/the-tim-ferriss-show/', 
+'/2018/03/29/discipline-sex-psychedelics-and-more-the-return-of-drunk-dialing/', 
+'/author/tferriss/', 
+'/2018/03/12/aubrey-marcus/', 
+'/2018/03/21/how-to-prioritize-your-life-and-make-time-for-what-matters/', 
+'/2018/03/15/frank-blake/', '/2018/03/05/jack-kornfield/', '/2017/11/03/sharon-salzberg/', '/2016/12/20/becoming-the-best-version-of-you/', '/2018/03/08/joe-gebbia-co-founder-of-airbnb/', '/page/2/', '/2018/03/25/daniel-pink/', '/2017/09/13/ray-dalio/', '/2017/01/12/how-to-design-a-life-debbie-millman/']
+r"^/(?P<year>\d+){4}/(?P<month>\d+){2}/(?P<day>\d+){2}/(?P<slug>[\w-]+)/$" # common url expressions joincfe.com/blog
+r"^/blog/(?P<slug>[\w-]+)/$"
+
+'''
+
+def get_regex_pattern(root_domain):
+    pattern = r"^/(?P<slug>[\w-]+)$"
+    if root_domain in saved_domains:
+        regex = saved_domains[root_domain].get("regex")
+        if regex is not None:
+            pattern = regex
+    return pattern
+
+def match_regex(string, regex):
+    pattern = re.compile(regex)
+    is_a_match = pattern.match(string) # regex match or None
+    if is_a_match is None:
+        return False
+    return True
+
+def get_regex_local_paths(soup, url):
+    links = parse_links(soup) 
+    local_paths = []
+    domain_name = get_domain_name(url)
+    regex = get_regex_pattern(domain_name)
+    for link in links:
+        link_domain = get_domain_name(link) 
+        if link_domain == domain_name:
+            path = get_path_name(link)
+            is_match = match_regex(path, regex)
+            if is_match:
+                local_paths.append(path)
+        elif link.startswith("/"): 
+            is_match = match_regex(link, regex)
+            if is_match:
+                local_paths.append(path)
+    return list(set(local_paths)) 
+
+
 def main():
     url = get_input()
     response = fetch_url(url)
@@ -156,7 +204,7 @@ def main():
     soup = soupify(response_html)
     html_soup = get_content_data(soup, url)
     #print(html_text)
-    paths = get_local_paths(html_soup, url)
+    paths = get_regex_local_paths(html_soup, url)
     print(paths)
 
     # call my url
