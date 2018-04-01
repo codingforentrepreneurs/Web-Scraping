@@ -52,6 +52,7 @@ Linux: https://kirr.co/c3uvuu
 1. Refine scraping code
 2. Scrape Links
 3. Add Scrape Depth
+4. Scrape & Parse words in a Post
 
 
 [1 - Welcome](../../tree/118bda3462c7452a828702f3e13a573aa5d28b4a/)
@@ -70,7 +71,17 @@ Linux: https://kirr.co/c3uvuu
 
 [8 - Extract Data](../../tree/6fc67c4e424ca64600813dd8a4b16916186e149e/)
 
+[9 - Parse Links](../../tree/beb8beef00da709310267c6e6b94c67f71540b93/)
 
+[10 - Get Local Paths](../../tree/056f95c20c4fc447ff840178dff9abe1cc973880/)
+
+[11 - Local Paths by Regular Expression](../../tree/9909d19a9e2bc2b6934bf571253a3661158ed417/)
+
+[12 - Some Lookup Errors](../../tree/32b91cc58332a01b57406453c5802368f25d6f1c/)
+
+[13 - Scrape Local Paths](../../tree/b6da1d3b02148099514ff8446e0fe535f140a030/)
+
+[14 - Parse Words](../../tree/3a808719fd2f343a9a2e279d65a5d71826d40c30/)
 
 
 
