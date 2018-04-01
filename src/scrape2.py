@@ -102,6 +102,8 @@ def soupify(html):
 def get_domain_name(url):
     return urlparse(url).netloc
 
+def get_path_name(url):
+    return urlparse(url).path
 
 def get_url_lookup_class(url):
     domain_name = get_domain_name(url)
@@ -131,6 +133,18 @@ def parse_links(soup):
         links.append(link)
     return links
 
+def get_local_paths(soup, url):
+    links = parse_links(soup) # list of links
+    local_paths = []
+    domain_name = get_domain_name(url)
+    for link in links:
+        link_domain = get_domain_name(link) # <a href='http://yourodmain.com/some-local/-link/'>
+        if link_domain == domain_name:
+            path = get_path_name(link)
+            local_paths.append(path)
+        elif link.startswith("/"): # <a href='/some-local/-link/'>
+            local_paths.append(link)
+    return list(set(local_paths)) # removes duplicates and returns list
 
 def main():
     url = get_input()
@@ -142,8 +156,8 @@ def main():
     soup = soupify(response_html)
     html_soup = get_content_data(soup, url)
     #print(html_text)
-    links = parse_links(html_soup)
-    print(links)
+    paths = get_local_paths(html_soup, url)
+    print(paths)
 
     # call my url
     # parse
