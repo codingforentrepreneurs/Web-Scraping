@@ -14,6 +14,11 @@ saved_domains = {
         "class": "main-container",
         "regex": r"^/blog/(?P<slug>[\w-]+)/$",
     },
+    "www.codingforentrepreneurs.com": {
+        "tag": "div",
+        "class": "main-container",
+        "regex": r"^/blog/(?P<slug>[\w-]+)/$",
+    },
     "tim.blog": {
         "tag": "div",
         "class": "content-area",
@@ -120,8 +125,8 @@ def get_url_lookup_class(url):
 
 def get_content_data(soup, url):
     lookup_dict = get_url_lookup_class(url)
-    if lookup_dict is None:
-        return soup.find("body").text
+    if lookup_dict is None or "tag" not in lookup_dict:
+        return soup.find("body")
     return soup.find(lookup_dict['tag'], {"class": lookup_dict['class']})
 
 
