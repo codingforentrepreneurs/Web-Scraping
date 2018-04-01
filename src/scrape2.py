@@ -133,7 +133,7 @@ def get_content_data(soup, url):
 def parse_links(soup):
     # <a href='/abc/'>Link</a>
     a_tags = soup.find_all("a", href=True)
-    print(a_tags)
+    #print(a_tags)
     links = []
     for a in a_tags:
         link = a['href'] # '/abc/', '/another/'
@@ -210,7 +210,14 @@ def main():
     html_soup = get_content_data(soup, url)
     #print(html_text)
     paths = get_regex_local_paths(html_soup, url)
-    print(paths)
+    for path in paths:
+        domain_name = get_domain_name(url)
+        lookup_url = f"http://{domain_name}{path}" 
+        lookup_response = fetch_url(lookup_url)
+        if lookup_response.status_code in range(200, 299):
+            lookup_soup = soupify(lookup_response.text)
+            # parse keywords & clean them
+            print(lookup_soup)
 
     # call my url
     # parse
