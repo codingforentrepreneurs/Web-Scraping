@@ -121,6 +121,16 @@ def get_content_data(soup, url):
     return soup.find(lookup_dict['tag'], {"class": lookup_dict['class']})
 
 
+def parse_links(soup):
+    # <a href='/abc/'>Link</a>
+    a_tags = soup.find_all("a", href=True)
+    print(a_tags)
+    links = []
+    for a in a_tags:
+        link = a['href'] # '/abc/', '/another/'
+        links.append(link)
+    return links
+
 
 def main():
     url = get_input()
@@ -130,8 +140,10 @@ def main():
         return None
     response_html = response.text # html
     soup = soupify(response_html)
-    html_text = get_content_data(soup, url)
-    print(html_text)
+    html_soup = get_content_data(soup, url)
+    #print(html_text)
+    links = parse_links(html_soup)
+    print(links)
 
     # call my url
     # parse
