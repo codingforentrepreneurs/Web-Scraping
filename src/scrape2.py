@@ -199,6 +199,15 @@ def match_regex(string, regex):
     return True
 
 def get_regex_local_paths(soup, url):
+    '''
+    This will scrape local paths based on a regular expression
+    from the get_regex_pattern_method
+
+    :soup -- soupified html 
+    :url -- local domain url
+    returns list of local paths from the url
+
+    '''
     links = parse_links(soup) 
     local_paths = []
     domain_name = get_domain_name(url)
@@ -251,5 +260,51 @@ def main():
     # parse
     # save
 
-main()
+#main()
+
+
+
+def fetch_links_words(url):
+    print(url, "scraping..")
+    response            = fetch_url(url)
+    soup                = soupify(response.text)
+    html_soup           = get_content_data(soup, url)
+    local_paths         = get_regex_local_paths(html_soup, url) # /this/is/some/path
+    domain_name         = get_domain_name(url)
+    to_scrape           = [f"http://{domain_name}{path}" for path in local_paths]
+    words               = []
+    if html_soup:
+        words           = html_soup.text.split()
+    clean_words         = clean_up_words(words)
+    return set(to_scrape), clean_words
+
+# , 
+def scrape_links(to_scrape, scraped, current_depth=0, max_depth=3, words=[]):
+    if current_depth <= max_depth:
+        new_set_to_scrape = set() 
+        while to_scrape:
+            item = to_scrape.pop() 
+            if item not in scraped:
+                new_paths, new_words = fetch_links_words(item)
+                words += new_words
+                new_set_to_scrape = (new_set_to_scrape | new_paths) # removes extra
+            scraped.add(item)
+        current_depth += 1
+        return scrape_links(new_set_to_scrape, scraped, current_depth=current_depth, max_depth=max_depth, words=words)
+    return scraped, words
+
+
+
+def main_with_depth():
+    url                         = 'http://tim.blog/' #get_input()
+    to_scrape_a, new_words      = fetch_links_words(url)
+    scraped_a                   = set([url])
+    final_scraped_items, final_words = scrape_links(to_scrape_a, scraped_a, current_depth=0, max_depth=3, words=new_words)
+    print(final_scraped_items)
+
+
+
+main_with_depth()
+
+
 
