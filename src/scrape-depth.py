@@ -7,24 +7,28 @@ to_scrape.add('/path-2')
 scraped_items = set() # uniqueness
 scraped_items.add("/path-2")
 
-
+def fetch_links_words(url):
+    print(url, "scraping..")
+    return set(["/path-3", "/path-4"]), ["words1", "words2"]
 
 # , 
-def scrape_links(to_scrape, scraped, current_depth=0, max_depth=3):
+def scrape_links(to_scrape, scraped, current_depth=0, max_depth=3, words=[]):
     if current_depth <= max_depth:
-        while to_scrape: # while items are in the set that equals true
-            item = to_scrape.pop() # remove the item from the set
+        new_set_to_scrape = set() 
+        while to_scrape:
+            item = to_scrape.pop() 
             if item not in scraped:
-                print(item, "scrape these items") # this where i can scrape some more
-                to_scrape.add("/path-1")
+                new_paths, new_words = fetch_links_words(item)
+                words += new_words
+                new_set_to_scrape = (new_set_to_scrape | new_paths) # removes extra
             scraped.add(item)
         current_depth += 1
-        return scrape_links(to_scrape, scraped, current_depth=current_depth, max_depth=max_depth)
-    return to_scrape, scraped
+        return scrape_links(new_set_to_scrape, scraped, current_depth=current_depth, max_depth=max_depth, words=words)
+    return scraped, words
 
 
-to_scrape, scraped = scrape_links(to_scrape, set(), current_depth=0, max_depth=3)
-print(list(scraped))
+scraped, words = scrape_links(to_scrape, set(), current_depth=0, max_depth=3)
+print(scraped, words)
 
 
 
