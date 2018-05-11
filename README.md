@@ -83,6 +83,14 @@ Linux: https://kirr.co/c3uvuu
 
 [14 - Parse Words](../../tree/3a808719fd2f343a9a2e279d65a5d71826d40c30/)
 
+[15 - Python Set](../../tree/2bd7b5fc47cd9d4dddb38b0c63b236e2069845d3/)
+
+[16 - A Recursive Function](../../tree/8bae867a8a89d851333a6ab13aa46f4ba2f76930/)
+
+[17 - Mock Fetching](../../tree/898d69d8e6edab45f266c848b9907192546c5e06/)
+
+[18 - All together](../../tree/fa8de79f2bc4cce3142ff3254ec4aa415eb824d4/)
+
 
 
 ## Section 3: [Asyncio & Web Scraping](https://www.codingforentrepreneurs.com/courses/web-scraping/asyncio-web-scraping/)
